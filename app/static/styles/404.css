@@ -1,0 +1,25 @@
+.footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #34495E;
+  color: white;
+  text-align: center;
+}
+
+body{
+  font-family: 'Fredoka', sans-serif;
+  text-align: center;
+}
+
+h1{
+  color: #276A96;
+  text-align: center;
+}
+
+a{
+  text-align: center;
+  text-decoration-line: none;
+  color: dodgerblue;
+}

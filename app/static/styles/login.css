@@ -1,0 +1,28 @@
+body{
+  text-align: center;
+  background: repeating-linear-gradient(#2980B9, #5499C7);
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+.container{
+  border-radius: 25px;
+  display: inline-block;
+  background-color: #f2f2f2;
+  padding: 10px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+}

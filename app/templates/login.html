@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stardust Login</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/login.css')}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <h1>Stardust Login</h1>
+    <a href='{{ auth_url }}'><img src="{{url_for('static', filename='ms-symbollockup_signin_dark.png')}}" align="middle"></a>
+
+    {% if config.get("B2C_RESET_PASSWORD_AUTHORITY") %}
+    <li><a href='{{_build_auth_code_flow(authority=config["B2C_RESET_PASSWORD_AUTHORITY"])["auth_uri"]}}'>Reset Password</a></li>
+    {% endif %}
+  </div>
+</body>
+</html>
+

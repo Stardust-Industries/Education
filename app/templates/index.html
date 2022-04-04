@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Javascript for admin's -->
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='js/admin-index.js') }}"></script>
+  {% endblock %}
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div>
+    <h1>Welcome {{ user.get("name") }}</h1>
+    {% if admin == False %}
+    <h2>Your Score</h2>
+    <p class="score">{{ row }}<span class="exclamation-point">!</span></p>
+    <div class="center">
+      <a href="/logout">Logout</a>
+    </div>
+    {% elif admin == True %}
+      <h3>You are an admin!</h3>
+      <p>Here are all the scores!</p>
+      <form method="POST">
+        <input type="text" placeholder="Users Name" name="user_id">
+        <input type="text" placeholder="New Score..." name="newScoreForUser">
+        <input type="submit" value="Update Student's Score"
+        <p>{{ return_message }}</p>
+      </form>
+      {% for row in rows %}
+      <ul>
+        <li><span id="{{ row[0] }}" onclick="copyEvent('{{ row[0] }}')">{{ row[0] }}</span> --- {{ row[1] }} --- {{ row[2] }}</li>
+      </ul>
+      {% endfor %}
+    {% else %}
+      <p>You are not admin</p>
+    {% endif %}
+  </div>
+  <div class="classes">
+    {{ classes }}
+  </div>
+    <!-- {% if config.get("ENDPOINT") %}
+      <!-- <li><a href='/graphcall'>Call Microsoft Graph API</a></li> 
+    {% endif %} -->
+
+    {% if config.get("B2C_PROFILE_AUTHORITY") %}
+      <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
+    {% endif %}
+
+<footer class="footer">
+  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/NebulousCalm/Stardust-For-Education">Github</a><br><br>
+<a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
+
+</footer>
+</body>
+</html>
