@@ -5,4 +5,3 @@ const copyEvent = (id) => {
 }
 
 // For copying and pasting names just on one click
-// Help, nothing renders anymore
