@@ -5,6 +5,8 @@ from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 import sqlite3
+import random
+import string
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -14,7 +16,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-
 @app.route("/")
 def index():
     if not session.get("user"):
@@ -23,83 +24,157 @@ def index():
 
     user_data = session["user"]
     user_name = user_data["name"]
-    preferred_username = user_data[
-        "preferred_username"]  # We can't get personal data, just username and random stuff, nothing harmful
-    print(
-        str(user_data) + "\n\n\n" + str(user_name) + "\n" +
-        str(preferred_username))
-
-    admin = False
-    rows = None
-    # Database Stuff
-    connection = sqlite3.connect('users.db', check_same_thread=False)
-    cursor = connection.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS users (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')
-  
-    cursor.execute('SELECT Score FROM users WHERE User_id=?', (preferred_username, ))
-    users_score = cursor.fetchall()
-
-    for x in users_score:
-        y = str(x)
-        i = ''.join(y)
-        row = i.replace('(', '').replace(')', '').replace(',', '')
-
-    for getScore in cursor.execute('SELECT Score FROM users WHERE User_id=?', (preferred_username, )):
-        Score = getScore
-        print(Score)
-        if preferred_username == 'zjrichman@outlook.com' or preferred_username == 'noahdepalma123@yahoo.com':
-            admin = True
-            cursor.execute('SELECT * FROM users')
-            rows = cursor.fetchall()
-            #for row in rows:
-                #print(row)
-            print('Admin has entered the building')
-        else:
-            admin = False
-        break
-    else:
-        row = None
-        print("not found")
-        print("User Has Not Logged In Before...")
-        print("Adding them to database now...")
-        cursor.execute("INSERT INTO users (User_id, Name, Score) VALUES (?, ?, ?)", (preferred_username, str( user_data["name"]), 0))
-        connection.commit()
-        connection.close()
-
+    preferred_username = user_data["preferred_username"]  # We can't get personal data
+    
     return render_template(
-      'index.html',
+      'home.html',
       user=session["user"],
-      version=msal.__version__,
-      admin=admin,
-      rows=rows,
-      row=row,
     )
 
+# App creation script
+@app.route('/Create')
+def create():
+  connection = sqlite3.connect('classes.db', check_same_thread=False)
+  cursor = connection.cursor()
+  
+  def table_name(amount):
+    return ''.join(random.choice(string.ascii_letters) for character in range(amount))
+
+  table_name = table_name(10)
+  cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')
+  connection.commit()
+
+  cursor.execute('CREATE TABLE IF NOT EXISTS existing_classes (TableName TEXT)')
+  cursor.execute('INSERT INTO existing_classes VALUES (?)', (str(table_name), ))
+  connection.commit()
+  connection.close()
+  return "Created class named: " + str(table_name)
+
+  
+# For multiple classes
+@app.route('/classes/<name>')
+def get_url(name):
+  connection = sqlite3.connect('classes.db')
+  cursor = connection.cursor()
+  isValid = False
+  
+  try:
+    cursor.execute('SELECT * FROM ' + name)
+    print('It works')
+    isValid = True
+  except:
+    print('Class does not exist')
+    isValid = False
+  finally:
+    connection.commit()
+    connection.close()
+
+  if isValid == True:
+      if not session.get("user"):
+        return redirect(url_for("login"))
+      print(str(session["user"])) # Can use to get fancy user data
+    
+      user_data = session["user"]
+      user_name = user_data["name"]
+      preferred_username = user_data["preferred_username"]  # We can't get personal data, just username and random stuff, nothing harmful
+      print(
+          str(user_data) + "\n\n\n" + str(user_name) + "\n" +
+          str(preferred_username))
+    
+      admin = False
+      rows = None
+      # Database Stuff
+      connection = sqlite3.connect('classes.db', check_same_thread=False)
+      cursor = connection.cursor()
+    
+      cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, ))
+      users_score = cursor.fetchall()
+    
+      for x in users_score:
+          y = str(x)
+          i = ''.join(y)
+          row = i.replace('(', '').replace(')', '').replace(',', '')
+    
+      for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
+          Score = getScore
+          print(Score)
+          if preferred_username == 'zjrichman@outlook.com' or preferred_username == 'noahdepalma123@yahoo.com':
+              admin = True
+              cursor.execute('SELECT * FROM ' + name)
+              rows = cursor.fetchall()
+              #for row in rows:
+                  #print(row)
+              print('Admin has entered the building')
+          else:
+              admin = False
+          break
+      else:
+          row = None
+          print("not found")
+          print("User Has Not Logged In Before...")
+          print("Adding them to database now...")
+          cursor.execute("INSERT INTO " + name + " (User_id, Name, Score) VALUES (?, ?, ?)", (preferred_username, str( user_data["name"]), 0))
+          connection.commit()
+          connection.close()
+        
+    
+
+  else:
+    return render_template(
+    '404.html'
+  )
+
+  return render_template(
+    'index.html',
+    name=name,
+    isValid=isValid,
+    row=row,
+    rows=rows,
+    admin=admin,
+    user=session["user"]
+  )
+
+
+# Admin (Zach and Noah)
+@app.route('/Admin')
+def admin():
+  user_data = session["user"]
+  preferred_username = user_data["preferred_username"]
+  
+  if True or preferred_username == 'zjrichman@outlook.com' or preferred_username == '8892766848@student.cms.k12.nc.us':
+    connection = sqlite3.connect('classes.db', check_same_thread=False)
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM existing_classes')
+    rows = cursor.fetchall()
+    return render_template(
+      'admin.html',
+      rows=rows
+    )
+  else:
+    return 'You commit crime by seeing this page because you not admin.'
+  
 # Update users
-@app.route('/', methods=["POST"])
-def update_score():
+@app.route('/classes/<name>', methods=["POST"])
+def update_score(name):
     users_name = request.form['user_id']
     val = request.form["newScoreForUser"]
     print(val)
-    if val.isdigit():
-        # Database Stuff
-        connection = sqlite3.connect('users.db', check_same_thread=False)
-        cursor = connection.cursor()
-        try:
-            print("Changing Values")
-            cursor.execute('UPDATE users SET Score = ? WHERE User_id = ?', (
-                val,
-                users_name,
-            ))
-        except:
-            print("Invalid name...")
-        finally:
-            connection.commit()
-            connection.close()
+    if val.isdigit(): # If the inputted digit is a value (Valid)
+      connection = sqlite3.connect('classes.db', check_same_thread=False)
+      cursor = connection.cursor()
+      try:
+        print("Changing Values")
+        cursor.execute('UPDATE ' + name + ' SET Score = ? WHERE User_id = ?', (val, users_name, ))
+      #except:
+        #print("Invalid name...")
+      finally:
+        connection.commit()
+        connection.close()
     else:
-        print('Not an integer...')
+      print('Not an integer...')
 
-    return redirect(url_for("index"))
+    return redirect(url_for("get_url", name=name))
 
 
 @app.route("/login")
@@ -183,12 +258,6 @@ def _get_token_from_cache(scope=None):
         result = cca.acquire_token_silent(scope, account=accounts[0])
         _save_cache(cache)
         return result
-
-
-@app.route('/')
-def check_classes():
-    return render_template('index.html')
-
 
 # 404 Error Pages
 @app.errorhandler(404)

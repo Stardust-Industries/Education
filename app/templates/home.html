@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/home.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div>
+    <h1>Welcome {{ user.get("name") }}</h1>
+
+    <div style="text-align:center;margin:15px;">
+      <div class="center">
+        <a style="display:inline-block;" href="/Create" class="button">Create A Class</a>
+      </div>
+      <form method="POST">
+        <br><br>
+        <label for="code">Go to <a href="/Admin">'/Admin'</a> to see all classes</label><br><br>
+        <input type="text" name="code" placeholder="Enter Code">
+        <input type="submit" value="Join Class">
+      </form>
+    </div>
+      
+    {% if config.get("B2C_PROFILE_AUTHORITY") %}
+      <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
+    {% endif %}
+<footer class="footer">
+  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
+<a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
+</footer>
+</body>
+</html>
