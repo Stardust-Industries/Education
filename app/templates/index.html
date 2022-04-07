@@ -26,7 +26,7 @@
       <a href="/logout">Logout</a>
     </div>
     {% elif admin == True %}
-      <h3>You are an admin!</h3>
+      <h3>You are an admin!</h3><h3 style="text-align:right;">Class Code: {{ name }}</h3>
       <p>Here are all the scores!</p>
       <form method="POST">
         <input type="text" placeholder="Users Name" name="user_id">

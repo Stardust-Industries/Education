@@ -5,6 +5,9 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/home.css')}}">
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='/js/redirect-off-input.js') }}"></script>
+  {% endblock %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -21,12 +24,10 @@
       <div class="center">
         <a style="display:inline-block;" href="/Create" class="button">Create A Class</a>
       </div>
-      <form method="POST">
         <br><br>
         <label for="code">Go to <a href="/Admin">'/Admin'</a> to see all classes</label><br><br>
-        <input type="text" name="code" placeholder="Enter Code">
-        <input type="submit" value="Join Class">
-      </form>
+        <input id="url" type="text" placeholder="Enter Url">
+        <button onclick="enterUrl()">Go To Url</button>  
     </div>
       
     {% if config.get("B2C_PROFILE_AUTHORITY") %}

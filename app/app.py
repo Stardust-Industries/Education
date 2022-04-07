@@ -41,8 +41,7 @@ def create():
     return ''.join(random.choice(string.ascii_letters) for character in range(amount))
 
   table_name = table_name(10)
-  cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')
-  connection.commit()
+  cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')  
 
   cursor.execute('CREATE TABLE IF NOT EXISTS existing_classes (TableName TEXT)')
   cursor.execute('INSERT INTO existing_classes VALUES (?)', (str(table_name), ))
@@ -94,7 +93,7 @@ def get_url(name):
           y = str(x)
           i = ''.join(y)
           row = i.replace('(', '').replace(')', '').replace(',', '')
-    
+
       for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
           Score = getScore
           print(Score)
@@ -114,6 +113,7 @@ def get_url(name):
           print("User Has Not Logged In Before...")
           print("Adding them to database now...")
           cursor.execute("INSERT INTO " + name + " (User_id, Name, Score) VALUES (?, ?, ?)", (preferred_username, str( user_data["name"]), 0))
+        
           connection.commit()
           connection.close()
         
