@@ -1,12 +1,14 @@
-import uuid
+#import uuid
 import requests
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, send_file
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 import sqlite3
 import random
 import string
+import qrcode
+from markupsafe import escape
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -22,20 +24,32 @@ def index():
         return redirect(url_for("login"))
     # print(str(session["user"])) Can use to get fancy user data
 
-    user_data = session["user"]
-    user_name = user_data["name"]
-    preferred_username = user_data["preferred_username"]  # We can't get personal data
+    # user_data = session["user"]
     
     return render_template(
       'home.html',
       user=session["user"],
     )
 
-# App creation script
 @app.route('/Create')
+def create_page():
+  return render_template(
+    'create.html'
+  )
+
+# Class creation script
+@app.route('/Create', methods=["POST"])
 def create():
+
+  class_name = escape(request.form["classname"])
+  teacher_name = escape(request.form["teachername"])
+  grade = escape(request.form["grade"])
+  
   connection = sqlite3.connect('classes.db', check_same_thread=False)
   cursor = connection.cursor()
+
+  user_data = session["user"]
+  preferred_username = user_data["preferred_username"]
   
   def table_name(amount):
     return ''.join(random.choice(string.ascii_letters) for character in range(amount))
@@ -43,11 +57,11 @@ def create():
   table_name = table_name(10)
   cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')  
 
-  cursor.execute('CREATE TABLE IF NOT EXISTS existing_classes (TableName TEXT)')
-  cursor.execute('INSERT INTO existing_classes VALUES (?)', (str(table_name), ))
+  cursor.execute('CREATE TABLE IF NOT EXISTS existing_classes (TableName TEXT, Admin_id TEXT, ClassName TEXT, TeacherName TEXT, Grade TEXT)')
+  cursor.execute('INSERT INTO existing_classes VALUES (?, ?, ?, ?, ?)', (str(table_name), preferred_username, class_name, teacher_name, grade))
   connection.commit()
   connection.close()
-  return "Created class named: " + str(table_name)
+  return redirect('https://education.stardust-industries.repl.co/classes/' + str(table_name))
 
   
 # For multiple classes
@@ -88,7 +102,25 @@ def get_url(name):
     
       cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, ))
       users_score = cursor.fetchall()
-    
+
+      for Admin_id in cursor.execute('SELECT Admin_id FROM existing_classes WHERE TableName=?', (name, )):
+        print('admin id: ' + str(Admin_id)) 
+        admin_id = ''.join(Admin_id)
+        print("Admin Id After Filter: " + admin_id)
+        
+      # For statements for class data (existing_classes table) needed here
+      # ClassName TEXT, TeacherName TEXT, Grade TEXT
+      for className in cursor.execute('SELECT ClassName FROM existing_classes WHERE TableName=?', (name, )):
+        class_name = ''.join(className)
+        print(class_name)
+      for teacherName in cursor.execute('SELECT TeacherName FROM existing_classes WHERE TableName=?', (name, )):
+        teacher_name = ''.join(teacherName)
+        teacher_name = str(teacher_name)
+        print(teacher_name)
+      for grade in cursor.execute('SELECT Grade FROM existing_classes WHERE TableName=?', (name, )): 
+        grade = ''.join(grade)
+        print(grade)
+      
       for x in users_score:
           y = str(x)
           i = ''.join(y)
@@ -97,7 +129,11 @@ def get_url(name):
       for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
           Score = getScore
           print(Score)
-          if preferred_username == 'zjrichman@outlook.com' or preferred_username == 'noahdepalma123@yahoo.com':
+          
+          user_id = str(preferred_username)
+          print(user_id + " VS " + admin_id)
+          if admin_id == user_id:
+              print("Is Admin")
               admin = True
               cursor.execute('SELECT * FROM ' + name)
               rows = cursor.fetchall()
@@ -131,17 +167,97 @@ def get_url(name):
     row=row,
     rows=rows,
     admin=admin,
-    user=session["user"]
+    user=session["user"],
+    grade=grade,
+    teacher_name=teacher_name,
+    class_name=class_name,
+    preferred_username=preferred_username
   )
 
+@app.route('/<name>/<username>/qr')
+def create_qr_code(name, username):
+  
+  qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=4,
+  )
 
-# Admin (Zach and Noah)
+  qr.add_data('https://education.stardust-industries.repl.co/user/' + name + '/' + username)
+  qr.make(fit=True)
+
+  img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
+  img.save("qr-code.png")  
+  
+  return send_file('../qr-code.png', mimetype='image/png')
+
+
+@app.route('/user/<name>/<username>')
+def user_profile(name, username):
+  user_data = session["user"]
+  preferred_username = user_data["preferred_username"]
+  
+  connection = sqlite3.connect('classes.db')
+  cursor = connection.cursor()
+  for Admin_id in cursor.execute('SELECT Admin_id FROM existing_classes WHERE TableName=?', (name, )):
+        print('admin id: ' + str(Admin_id)) 
+        admin_id = ''.join(Admin_id)
+        print("Admin Id After Filter: " + admin_id)
+
+  print(admin_id + " VS " + preferred_username)
+  if admin_id == preferred_username:
+    print('Is Admin')
+    isAdmin = True
+    for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (username, )):
+      Score = getScore
+      print(Score)
+    
+    y = str(Score)
+    i = ''.join(y)
+    Score = i.replace('(', '').replace(')', '').replace(',', '')
+  else:
+    isAdmin = False
+    Score = None
+    
+  return render_template(
+    'user_view.html',
+    Score=Score,
+    isAdmin=isAdmin
+  )
+  connection.commit()
+  connection.close()
+
+  return render_template(
+    'user_view.html'
+  )
+
+@app.route('/user/<name>/<username>', methods=["POST"])
+def update_score_from_qr(name, username):
+    val = request.form['newScore']
+    print(val)
+    if val.isdigit(): # If the inputted digit is a value (Valid)
+      connection = sqlite3.connect('classes.db', check_same_thread=False)
+      cursor = connection.cursor()
+      try:
+        print("Changing Values")
+        cursor.execute('UPDATE ' + name + ' SET Score = ? WHERE User_id = ?', (val, username, ))
+      #except:
+        #print("Invalid name...")
+      finally:
+        connection.commit()
+        connection.close()
+    else:
+      print('Not an integer...')
+
+    return redirect('https://education.stardust-industries.repl.co/user/' + name + '/' + username)
+  
 @app.route('/Admin')
 def admin():
   user_data = session["user"]
   preferred_username = user_data["preferred_username"]
   
-  if True or preferred_username == 'zjrichman@outlook.com' or preferred_username == '8892766848@student.cms.k12.nc.us':
+  if True or preferred_username == 'zjrichman@outlook.com' or preferred_username == 'noahdepalma123@yahoo.com':
     connection = sqlite3.connect('classes.db', check_same_thread=False)
     cursor = connection.cursor()
 
@@ -152,7 +268,7 @@ def admin():
       rows=rows
     )
   else:
-    return 'You commit crime by seeing this page because you not admin.'
+    return 'You are not admin'
   
 # Update users
 @app.route('/classes/<name>', methods=["POST"])

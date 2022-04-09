@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+{% if isAdmin == True %}
+  <h2>Students Score</h2>
+  
+    <p class="score">{{ Score }}<span class="exclamation-point">!</span></p>
+    <div class="center">
+      <form method="POST">
+        <input type="text" name="newScore" placeholder="Students New Score">
+        <input type="submit" value="Update Student">
+      </form>
+    </div>
+
+  <footer class="footer">
+  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
+  <a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
+  </footer>
+{% else %}
+  <!-- Can Only Access If Owner Of Class -->
+{% endif %}
+</body>

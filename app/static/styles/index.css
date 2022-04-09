@@ -22,6 +22,10 @@ h3{
   color: #276A96;
 }
 
+.class-details{
+  text-align: center;
+}
+
 .score{
   text-align: center;
   font-size: 150px;
@@ -44,6 +48,18 @@ h3{
   color: white;
   text-align: center;
 }
+
+@media screen and (max-width: 480px) {
+  .footer{
+    visibility: hidden;
+  }
+}
+
+.admin-class{
+  display: inline-block;
+}
+
+
 /* Custom Highlight Colors */
 -moz-selection{
   color: #fff;

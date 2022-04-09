@@ -5,6 +5,7 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
   <!-- Javascript for admin's -->
   {% block scripts %}
     <script src="{{ url_for('static', filename='js/admin-index.js') }}"></script>
@@ -19,6 +20,11 @@
 <body>
   <div>
     <h1>Welcome {{ user.get("name") }}</h1>
+    <h3 class="class-details"><a href="https://education.stardust-industries.repl.co/{{ name }}/{{ preferred_username }}/qr">QR Code</a></h3>
+    <h3 class="class-details">Class Code: {{ name }}</h3>
+    <h3 class="class-details">Class Name: {{ class_name | safe}}</h3>
+    <h3 class="class-details">Teacher's Name: {{ teacher_name | safe}}</h3>
+    <h3 class="class-details">Grade: {{ grade | safe}}</h3>
     {% if admin == False %}
     <h2>Your Score</h2>
     <p class="score">{{ row }}<span class="exclamation-point">!</span></p>
@@ -26,7 +32,8 @@
       <a href="/logout">Logout</a>
     </div>
     {% elif admin == True %}
-      <h3>You are an admin!</h3><h3 style="text-align:right;">Class Code: {{ name }}</h3>
+    <div class="admin-class">
+      <h3>You are an admin!</h3>
       <p>Here are all the scores!</p>
       <form method="POST">
         <input type="text" placeholder="Users Name" name="user_id">
@@ -39,6 +46,7 @@
         <li><span id="{{ row[0] }}" onclick="copyEvent('{{ row[0] }}')">{{ row[0] }}</span> --- {{ row[1] }} --- {{ row[2] }}</li>
       </ul>
       {% endfor %}
+    </div>
     {% else %}
       <p>You are not admin</p>
     {% endif %}
@@ -46,9 +54,7 @@
   <div class="classes">
     {{ classes }}
   </div>
-    <!-- {% if config.get("ENDPOINT") %}
-      <!-- <li><a href='/graphcall'>Call Microsoft Graph API</a></li> 
-    {% endif %} -->
+
 
     {% if config.get("B2C_PROFILE_AUTHORITY") %}
       <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
