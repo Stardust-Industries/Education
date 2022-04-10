@@ -252,19 +252,16 @@ def update_score_from_qr(name, username):
 
     return redirect('https://education.stardust-industries.repl.co/user/' + name + '/' + username)
   
-@app.route('/Admin')
-def admin():
-  user_data = session["user"]
-  preferred_username = user_data["preferred_username"]
-  
-  if True or preferred_username == 'zjrichman@outlook.com' or preferred_username == 'noahdepalma123@yahoo.com':
+@app.route('/all_classes')
+def all_classes():
+  if True:
     connection = sqlite3.connect('classes.db', check_same_thread=False)
     cursor = connection.cursor()
 
     cursor.execute('SELECT * FROM existing_classes')
     rows = cursor.fetchall()
     return render_template(
-      'admin.html',
+      'all_classes.html',
       rows=rows
     )
   else:
