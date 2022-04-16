@@ -19,3 +19,23 @@
 .button:hover{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
 }
+
+input, button{
+  margin: 20px;
+  font-size: 15px;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  color: #276A96;
+  transition: 0.25s;
+  outline: none;
+}
+
+input:hover, input:focus, button:hover, button:focus{
+  border: 2px solid #276A96;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+}
+
+button{
+  cursor: pointer;
+}
