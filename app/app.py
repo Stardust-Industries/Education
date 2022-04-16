@@ -55,7 +55,7 @@ def create():
     return ''.join(random.choice(string.ascii_letters) for character in range(amount))
 
   table_name = table_name(10)
-  cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT)')  
+  cursor.execute('CREATE TABLE IF NOT EXISTS ' + str(table_name) + ' (User_id TEXT NOT NULL PRIMARY KEY, Name TEXT, Score INT, Comment TEXT)')  
 
   cursor.execute('CREATE TABLE IF NOT EXISTS existing_classes (TableName TEXT, Admin_id TEXT, ClassName TEXT, TeacherName TEXT, Grade TEXT)')
   cursor.execute('INSERT INTO existing_classes VALUES (?, ?, ?, ?, ?)', (str(table_name), preferred_username, class_name, teacher_name, grade))
@@ -129,6 +129,11 @@ def get_url(name):
       for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
           Score = getScore
           print(Score)
+
+          
+      for getComment in cursor.execute('SELECT Comment FROM ' + name + ' WHERE User_id = ?', (preferred_username, )):
+          comment = getComment
+          print(comment)
           
           user_id = str(preferred_username)
           print(user_id + " VS " + admin_id)
@@ -148,13 +153,11 @@ def get_url(name):
           print("not found")
           print("User Has Not Logged In Before...")
           print("Adding them to database now...")
-          cursor.execute("INSERT INTO " + name + " (User_id, Name, Score) VALUES (?, ?, ?)", (preferred_username, str( user_data["name"]), 0))
+          cursor.execute("INSERT INTO " + name + " (User_id, Name, Score, Comment) VALUES (?, ?, ?, ?)", (preferred_username, str( user_data["name"]), 0, "No Comment"))
         
           connection.commit()
           connection.close()
         
-    
-
   else:
     return render_template(
     '404.html'
@@ -212,7 +215,9 @@ def user_profile(name, username):
     for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (username, )):
       Score = getScore
       print(Score)
-    
+    for getComment in cursor.execute('SELECT Comment FROM ' + name + ' WHERE User_id = ?', (username, )):
+      comment = getComment
+      print(comment)
     y = str(Score)
     i = ''.join(y)
     Score = i.replace('(', '').replace(')', '').replace(',', '')
@@ -223,7 +228,8 @@ def user_profile(name, username):
   return render_template(
     'user_view.html',
     Score=Score,
-    isAdmin=isAdmin
+    isAdmin=isAdmin,
+    comment=comment
   )
   connection.commit()
   connection.close()
@@ -235,6 +241,7 @@ def user_profile(name, username):
 @app.route('/user/<name>/<username>', methods=["POST"])
 def update_score_from_qr(name, username):
     val = request.form['newScore']
+    comment = escape(request.form['newComment'])
     print(val)
     if val.isdigit(): # If the inputted digit is a value (Valid)
       connection = sqlite3.connect('classes.db', check_same_thread=False)
@@ -242,6 +249,7 @@ def update_score_from_qr(name, username):
       try:
         print("Changing Values")
         cursor.execute('UPDATE ' + name + ' SET Score = ? WHERE User_id = ?', (val, username, ))
+        cursor.execute('UPDATE ' + name + ' SET Comment = ? WHERE User_id = ?', (comment, username) )
       #except:
         #print("Invalid name...")
       finally:
@@ -272,6 +280,7 @@ def all_classes():
 def update_score(name):
     users_name = request.form['user_id']
     val = request.form["newScoreForUser"]
+    comment = escape(request.form["newComment"])
     print(val)
     if val.isdigit(): # If the inputted digit is a value (Valid)
       connection = sqlite3.connect('classes.db', check_same_thread=False)
@@ -279,6 +288,7 @@ def update_score(name):
       try:
         print("Changing Values")
         cursor.execute('UPDATE ' + name + ' SET Score = ? WHERE User_id = ?', (val, users_name, ))
+        cursor.execute('UPDATE ' + name + ' SET Comment = ? WHERE User_id = ?',  (comment, users_name, ))
       #except:
         #print("Invalid name...")
       finally:

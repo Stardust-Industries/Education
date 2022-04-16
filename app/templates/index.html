@@ -36,14 +36,15 @@
       <h3>You are an admin!</h3>
       <p>Here are all the scores!</p>
       <form method="POST">
-        <input type="text" placeholder="Users Name" name="user_id">
-        <input type="text" placeholder="New Score..." name="newScoreForUser">
-        <input type="submit" value="Update Student's Score"
+        <input type="text" placeholder="Users Name" name="user_id" required>
+        <input type="text" placeholder="New Score..." name="newScoreForUser" required>
+        <input type="text" placeholder="New Comment..." name="newComment" required>
+        <input type="submit" value="Update Student's Score">
         <p>{{ return_message }}</p>
       </form>
       {% for row in rows %}
       <ul>
-        <li><span id="{{ row[0] }}" onclick="copyEvent('{{ row[0] }}')">{{ row[0] }}</span> --- {{ row[1] }} --- {{ row[2] }}</li>
+        <li><span id="{{ row[0] }}" onclick="copyEvent('{{ row[0] }}')">{{ row[0] }}</span> --- {{ row[1] }} --- {{ row[2] }} -- {{ row[3] | safe}}</li>
       </ul>
       {% endfor %}
     </div>

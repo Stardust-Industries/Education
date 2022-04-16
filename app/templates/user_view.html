@@ -17,9 +17,11 @@
   <h2>Students Score</h2>
   
     <p class="score">{{ Score }}<span class="exclamation-point">!</span></p>
+    <p class="comment" title="Comment Made By Teacher">{{ comment | safe}}</p>
     <div class="center">
       <form method="POST">
-        <input type="text" name="newScore" placeholder="Students New Score">
+        <input type="text" name="newScore" placeholder="Students New Score" required>
+        <input type="text" name="newComment" placeholder="Students New Comment" required>
         <input type="submit" value="Update Student">
       </form>
     </div>
