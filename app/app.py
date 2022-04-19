@@ -136,7 +136,6 @@ def get_url(name):
           print(comment)
           
           user_id = str(preferred_username)
-          print(user_id + " VS " + admin_id)
           if admin_id == user_id:
               print("Is Admin")
               admin = True

@@ -3,7 +3,7 @@
 }
 
 .button {
-  display: block;
+  display: inline-block;
   width: 115px;
   height: 25px;
   background: #4E9CAF;
@@ -16,10 +16,31 @@
   transition: 0.5s;
 }
 
-.button:hover{
+.button-text:after{
+  content: '';
+  display: block;
+  height: 2px;
+  width: 0;
+  background: transparent;
+  transition: width .5s ease, background-color .5s ease;
+  -webkit-transition: width .5s ease, background-color .5s ease;
+  -moz-transition: width .5s ease, background-color .5s ease;
+  margin: auto; 
+}
+
+.button-text:hover:after{
+  width: 100%;
+  background: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
 }
 
+.button:hover{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.55), 0 6px 20px 0 rgba(0, 0, 0, 0.39);
+}
+
+.button-text{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 input, button{
   margin: 20px;
   font-size: 15px;
@@ -38,4 +59,8 @@ input:hover, input:focus, button:hover, button:focus{
 
 button{
   cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  .button-text{font-size: 15px;}
 }

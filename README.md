@@ -9,6 +9,21 @@
 
 ### Encountered any bugs or problems? Report them here: <a href="https://github.com/Stardust-Industries/Education/issues">Issue Report On Github</a>
 
->#### Real website coming soon
+# Documentation
+
+![Home Page](/documentation-images/home-page.png)
+
+>### Red: Your name 
+>### Gray: Create a class
+>### Green: Enter class code to join (Click button to go)
+
+## Red
+### Your name. This is what will be shown throughout as your username, and will be what people know you by.
+
+## Gray
+### Create a class. This will be how one creates a class for there students. More details in a later segement.
+
+## Green
+### The teacher will provide a class code and the student can use the input field to go to said class. Or go manually via url, `https://education.stardust-industries.repl.co/classes/<class code>`
 
 ###### This was a teacher commisioned project and no monetary gain was made by both parties

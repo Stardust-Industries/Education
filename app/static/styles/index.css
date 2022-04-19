@@ -59,7 +59,10 @@ h3{
   display: inline-block;
 }
 
-
+.comment{
+  text-align: center;
+  margin-bottom: 25px;
+}
 /* Custom Highlight Colors */
 -moz-selection{
   color: #fff;

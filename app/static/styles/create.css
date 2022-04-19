@@ -19,5 +19,7 @@ input:hover, input:focus{
 }
 
 input.button{
+  background-color: #fafafa;
+  -webkit-appearance: none;
   cursor: pointer;
 }
