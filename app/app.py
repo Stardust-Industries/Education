@@ -66,14 +66,13 @@ def create():
   
 # For multiple classes
 @app.route('/classes/<name>')
-def get_url(name):
+def get_url(name): # Line 69 haha funny
   connection = sqlite3.connect('classes.db')
   cursor = connection.cursor()
   isValid = False
   
   try:
     cursor.execute('SELECT * FROM ' + name)
-    print('It works')
     isValid = True
   except:
     print('Class does not exist')
@@ -202,6 +201,7 @@ def user_profile(name, username):
   
   connection = sqlite3.connect('classes.db')
   cursor = connection.cursor()
+
   for Admin_id in cursor.execute('SELECT Admin_id FROM existing_classes WHERE TableName=?', (name, )):
         print('admin id: ' + str(Admin_id)) 
         admin_id = ''.join(Admin_id)
@@ -221,6 +221,7 @@ def user_profile(name, username):
     i = ''.join(y)
     Score = i.replace('(', '').replace(')', '').replace(',', '')
   else:
+    comment = None
     isAdmin = False
     Score = None
     
@@ -297,6 +298,10 @@ def update_score(name):
       print('Not an integer...')
 
     return redirect(url_for("get_url", name=name))
+
+@app.route('/classes/')
+def classes():
+  return render_template('classes-page.html')
 
 
 @app.route("/login")
@@ -384,11 +389,15 @@ def _get_token_from_cache(scope=None):
 # 404 Error Pages
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('/error-codes/404.html'), 404
 
+@app.errorhandler(500)
+def internal_server_error(e):
+  return render_template('/error-codes/500.html'), 500
 
 app.jinja_env.globals.update(
     _build_auth_code_flow=_build_auth_code_flow)  # Used in template
 
 #if __name__ == "__main__":
 app.run(host='0.0.0.0', port=8080, debug=True)
+# 400 lines of code for an app that never works

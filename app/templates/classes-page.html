@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <title>Classes</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/styles/home.css')}}">
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='/js/redirect-off-input.js') }}"></script>
+  {% endblock %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>Update Students Score</title>
+  
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,22 +17,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
-{% if isAdmin == True %}
-  <h2>Students Score</h2>
-  
-    <p class="score">{{ Score }}<span class="exclamation-point">!</span></p>
-    <p class="comment" title="Comment Made By Teacher">{{ comment | safe }}</p>
-      <form class="center" method="POST">
-        <input type="text" name="newScore" placeholder="Students New Score" required>
-        <input type="text" name="newComment" placeholder="Students New Comment" required>
-        <input type="submit" value="Update Student">
-      </form>
+  <div>
+    <h1>Classes</h1>
 
-  <footer class="footer">
+    <div style="text-align:center;margin:15px;">
+      <div class="center">
+        <a style="display:inline-block;" href="/Create" class="button button-text">Create A Class</a>
+      </div>
+        <br><br>
+        <label for="url">Join Your Class</label><br><br>
+        <input id="url" type="text" placeholder="Class Code" autocomplete="off" required>
+        <p class="button button-for-submit" onclick="enterUrl()">Join Class</p>  
+    </div>
+<footer class="footer">
   <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
-  <a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
-  </footer>
-{% else %}
-  <!-- Can only access if owner of class -->
-{% endif %}
+<a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
+</footer>
 </body>
+</html>

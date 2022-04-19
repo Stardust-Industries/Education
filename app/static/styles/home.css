@@ -16,7 +16,7 @@
   transition: 0.5s;
 }
 
-.button-text:after{
+.button:after{
   content: '';
   display: block;
   height: 2px;
@@ -28,7 +28,7 @@
   margin: auto; 
 }
 
-.button-text:hover:after{
+.button:hover:after{
   width: 100%;
   background: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
@@ -38,9 +38,15 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.55), 0 6px 20px 0 rgba(0, 0, 0, 0.39);
 }
 
-.button-text{
+.button{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.button-for-submit{
+  background: #2980B9;
+  cursor: pointer;
+}
+
 input, button{
   margin: 20px;
   font-size: 15px;
@@ -62,5 +68,5 @@ button{
 }
 
 @media screen and (max-width: 480px) {
-  .button-text{font-size: 15px;}
+  .button{font-size: 15px;}
 }

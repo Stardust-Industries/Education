@@ -1,8 +1,8 @@
-# Education
+# Stardust for Education
 
 >## Current Version: 1.1.2
 
-### Welcome to stardust for education! We have just released version *1.0.0* and are very excited! 
+### Welcome to Stardust for Education! We have just released version *1.0.0* and are very excited! 
 ### We have included a full list of features ranging from creating a class for students to qr codes for updating grades with teacher, admin, and student privelleges
 
 ### prototyped in <a href="https://replit.com">Replit</a>, made with Flask (Python web framework) and a lot of hard work, we are ready for our first release!
@@ -26,4 +26,7 @@
 ## Green
 ### The teacher will provide a class code and the student can use the input field to go to said class. Or go manually via url, `https://education.stardust-industries.repl.co/classes/<class code>`
 
-###### This was a teacher commisioned project and no monetary gain was made by both parties
+
+##### This documentation is a work in progress and we know it is bad, we will fix it :)
+
+###### This was a teacher commisioned project and no monetary gain was made by both parties <a href="https://github.com/Stardust-Industries/Education/blob/main/LICENSE">License</a>

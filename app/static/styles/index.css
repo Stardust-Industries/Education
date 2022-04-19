@@ -29,6 +29,7 @@ h3{
 .score{
   text-align: center;
   font-size: 150px;
+  padding: 0;
 }
 
 .exclamation-point{
@@ -36,6 +37,7 @@ h3{
 }
 
 .center{
+  margin: 0;
   text-align: center;
 }
 
@@ -49,9 +51,16 @@ h3{
   text-align: center;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px){
   .footer{
     visibility: hidden;
+  }
+}
+
+@media screen and (min-width: 500px){
+  h2:after{
+    color: #ff0000;
+    content: ' This was meant to be used for mobile devices and you may not have all features available to use'
   }
 }
 
