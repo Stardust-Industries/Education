@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+</head>
+<body>
+  <h1>Check to see if URL is valid</h1>
+  <h3 align="center">Page's Status Code: <span title="status code">{{ status_code }}</span></h3>
+  <form align="center" method="POST">
+    <input type="text" name="url" placeholder="Enter Testing Url Here" value="/">
+    <input type="submit" value="Check Url">
+  </form>
+</body>
+</html>

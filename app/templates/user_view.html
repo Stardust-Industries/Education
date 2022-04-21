@@ -14,6 +14,7 @@
 </head>
 <body>
 {% if isAdmin == True %}
+  <h1 class="css-err" style="color:red;">If you're seeing this there has been an issue loading this page.<br>Please refresh the window.</h1>
   <h2>Students Score</h2>
   
     <p class="score">{{ Score }}<span class="exclamation-point">!</span></p>
@@ -25,7 +26,7 @@
       </form>
 
   <footer class="footer">
-  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
+  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm/README.md">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack/README.md">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
   <a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
   </footer>
 {% else %}

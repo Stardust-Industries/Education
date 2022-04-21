@@ -2,6 +2,10 @@ body{
   font-family: 'Fredoka', sans-serif;
 }
 
+.css-err {
+  display: none;
+}
+
 h1{
   color: #276A96;
   text-align: center;
@@ -22,7 +26,13 @@ h3{
   color: #276A96;
 }
 
+.comment{
+  font-size: 50px;
+  padding-bottom: 100px;
+}
+
 .class-details{
+  font-size: 15px;
   text-align: center;
 }
 

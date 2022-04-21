@@ -23,8 +23,6 @@
   width: 0;
   background: transparent;
   transition: width .5s ease, background-color .5s ease;
-  -webkit-transition: width .5s ease, background-color .5s ease;
-  -moz-transition: width .5s ease, background-color .5s ease;
   margin: auto; 
 }
 
@@ -45,6 +43,7 @@
 .button-for-submit{
   background: #2980B9;
   cursor: pointer;
+  width: 100px;
 }
 
 input, button{
@@ -54,7 +53,7 @@ input, button{
   border: 1px solid #000;
   border-radius: 5px;
   color: #276A96;
-  transition: 0.25s;
+  transition: 0.5s;
   outline: none;
 }
 

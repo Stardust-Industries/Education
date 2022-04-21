@@ -19,6 +19,7 @@
 </head>
 <body>
   <div>
+    <h1 class="css-err" style="color:red;">If you're seeing this there has been an issue loading this page.<br>Please refresh the window.</h1>
     <h1>Welcome {{ user.get("name") }}</h1>
     <h3 class="class-details"><a href="https://education.stardust-industries.repl.co/{{ name }}/{{ preferred_username }}/qr">QR Code</a></h3>
     <h3 class="class-details">Class Code: {{ name }}</h3>
@@ -26,8 +27,10 @@
     <h3 class="class-details">Teacher's Name: {{ teacher_name | safe}}</h3>
     <h3 class="class-details">Grade: {{ grade | safe}}</h3>
     {% if admin == False %}
-    <h2>Your Score</h2>
+    <h1>Your Score:</h1>
     <p class="score">{{ row }}<span class="exclamation-point">!</span></p>
+    <h1>Teacher's Comment:</h1>
+    <p class="comment">"{{ comment }}"</p>
     <div class="center">
       <a href="/logout">Logout</a>
     </div>
@@ -61,7 +64,7 @@
       <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
     {% endif %}
 <footer class="footer">
-  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
+  <p>Made by Zach Richman <a href="https://www.github.com/NebulousCalm/README.md">(NebulousCalm)</a> and Noah DePalma <a href="https://www.github.com/TacoSnack/README.md">(TacoSnack)</a> - <a title="You Can Report Errors Here" href="https://www.github.com/Stardust-Industries/Education">Github/Report</a><br><br>
 <a href="/logout">Logout</a> - A Stardust Industries Project - <a href="https://home.stardust-industries.repl.co">Website</a></p>
 </footer>
 </body>

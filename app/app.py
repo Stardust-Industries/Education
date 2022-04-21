@@ -9,6 +9,7 @@ import random
 import string
 import qrcode
 from markupsafe import escape
+import requests
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -18,6 +19,28 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
+# Health Check Page
+@app.route('/check')
+def health_check():
+  r = requests.get('https://education.stardust-industries.repl.co')
+  status_code = r.status_code
+  return render_template(
+    'health_check.html',
+    status_code=status_code
+  )
+
+@app.route('/check', methods=["POST"])
+def check_url():
+  url = request.form["url"]
+  
+  r = requests.get('https://education.stardust-industries.repl.co' + url)
+  status_code = r.status_code
+
+  return render_template(
+    'health_check.html',
+    status_code=status_code
+  )
+  
 @app.route("/")
 def index():
     if not session.get("user"):
@@ -40,7 +63,6 @@ def create_page():
 # Class creation script
 @app.route('/Create', methods=["POST"])
 def create():
-
   class_name = escape(request.form["classname"])
   teacher_name = escape(request.form["teachername"])
   grade = escape(request.form["grade"])
@@ -70,7 +92,7 @@ def get_url(name): # Line 69 haha funny
   connection = sqlite3.connect('classes.db')
   cursor = connection.cursor()
   isValid = False
-  
+  comment = None
   try:
     cursor.execute('SELECT * FROM ' + name)
     isValid = True
@@ -89,9 +111,6 @@ def get_url(name): # Line 69 haha funny
       user_data = session["user"]
       user_name = user_data["name"]
       preferred_username = user_data["preferred_username"]  # We can't get personal data, just username and random stuff, nothing harmful
-      print(
-          str(user_data) + "\n\n\n" + str(user_name) + "\n" +
-          str(preferred_username))
     
       admin = False
       rows = None
@@ -119,21 +138,22 @@ def get_url(name): # Line 69 haha funny
       for grade in cursor.execute('SELECT Grade FROM existing_classes WHERE TableName=?', (name, )): 
         grade = ''.join(grade)
         print(grade)
-      
+
+      # Comment
+      for comment in cursor.execute('SELECT Comment FROM ' + name + ' WHERE User_id = ?', (preferred_username, )):
+          y = str(comment)
+          i = ''.join(y)
+          comment = i.replace('(', '').replace(')', '').replace(',', '').replace("'", '')
+    
       for x in users_score:
           y = str(x)
           i = ''.join(y)
           row = i.replace('(', '').replace(')', '').replace(',', '')
-
+        
       for getScore in cursor.execute('SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
           Score = getScore
           print(Score)
 
-          
-      for getComment in cursor.execute('SELECT Comment FROM ' + name + ' WHERE User_id = ?', (preferred_username, )):
-          comment = getComment
-          print(comment)
-          
           user_id = str(preferred_username)
           if admin_id == user_id:
               print("Is Admin")
@@ -172,7 +192,8 @@ def get_url(name): # Line 69 haha funny
     grade=grade,
     teacher_name=teacher_name,
     class_name=class_name,
-    preferred_username=preferred_username
+    preferred_username=preferred_username,
+    comment=comment
   )
 
 @app.route('/<name>/<username>/qr')
@@ -220,23 +241,19 @@ def user_profile(name, username):
     y = str(Score)
     i = ''.join(y)
     Score = i.replace('(', '').replace(')', '').replace(',', '')
+
+    return render_template(
+      'user_view.html',
+      Score=Score,
+      isAdmin=isAdmin,
+      comment=comment
+    )
   else:
-    comment = None
-    isAdmin = False
-    Score = None
+    return redirect('https://education.stardust-industries.repl.co/classes/' + name)
     
-  return render_template(
-    'user_view.html',
-    Score=Score,
-    isAdmin=isAdmin,
-    comment=comment
-  )
   connection.commit()
   connection.close()
 
-  return render_template(
-    'user_view.html'
-  )
 
 @app.route('/user/<name>/<username>', methods=["POST"])
 def update_score_from_qr(name, username):
@@ -303,6 +320,12 @@ def update_score(name):
 def classes():
   return render_template('classes-page.html')
 
+@app.route('/LICENSE/')
+def license():
+	try:
+		return send_file('../LICENSE', attachment_filename='LICENSE.txt')
+	except Exception as e:
+		return str(e)
 
 @app.route("/login")
 def login():
@@ -314,8 +337,7 @@ def login():
                            version=msal.__version__)
 
 
-@app.route(app_config.REDIRECT_PATH
-           )  # Its absolute URL must match your app's redirect_uri set in AAD
+@app.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
     try:
         cache = _load_cache()
@@ -400,4 +422,3 @@ app.jinja_env.globals.update(
 
 #if __name__ == "__main__":
 app.run(host='0.0.0.0', port=8080, debug=True)
-# 400 lines of code for an app that never works
