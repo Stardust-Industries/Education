@@ -9,7 +9,6 @@ import random
 import string
 import qrcode
 from markupsafe import escape
-import requests
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -88,7 +87,7 @@ def create():
   
 # For multiple classes
 @app.route('/classes/<name>')
-def get_url(name): # Line 69 haha funny
+def get_url(name):
   connection = sqlite3.connect('classes.db')
   cursor = connection.cursor()
   isValid = False
