@@ -55,4 +55,4 @@
 ##### Questions? Comments? Concerns? <a href="https://www.github.com/Stardust-Industries/Education">Github</a>
 
 ###### This was a teacher commisioned project and no monetary gain was made by both parties. 
-<a href="https://github.com/Stardust-Industries/Education/blob/main/LICENSE">License</a>
+<a href="https://education.stardust-industries.repl.co/LICENSE">License</a>
