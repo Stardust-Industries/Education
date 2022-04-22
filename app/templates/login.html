@@ -10,6 +10,7 @@
   <div class="container">
     <h1>Stardust Login</h1>
     <a href='{{ auth_url }}'><img src="{{url_for('static', filename='ms-symbollockup_signin_dark.png')}}" align="center"></a>
+    <br><br><a href="https://github.com/Stardust-Industries/Education/blob/main/README.md#stardust-for-education" target="_blank">Documentation</a>
 
     {% if config.get("B2C_RESET_PASSWORD_AUTHORITY") %}
     <li><a href='{{_build_auth_code_flow(authority=config["B2C_RESET_PASSWORD_AUTHORITY"])["auth_uri"]}}'>Reset Password</a></li>
@@ -17,4 +18,3 @@
   </div>
 </body>
 </html>
-

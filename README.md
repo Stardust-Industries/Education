@@ -1,6 +1,6 @@
 # Stardust for Education
 
->## Current Version: 1.1.2
+>## Current Version: 1.1.3
 
 ### Welcome to Stardust for Education! We have just released version *1.0.0* and are very excited! 
 ### We have included a full list of features ranging from creating a class for students to qr codes for updating grades with teacher, admin, and student privelleges

@@ -326,6 +326,8 @@ def license():
 
 @app.route("/login")
 def login():
+    if session.get("user"):
+        return redirect(url_for("index"))
     # Technically we could use empty list [] as scopes to do just sign in,
     # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
