@@ -45,9 +45,7 @@ def index():
     if not session.get("user"):
         return redirect(url_for("login"))
     # print(str(session["user"])) Can use to get fancy user data
-
     # user_data = session["user"]
-    
     return render_template(
       'home.html',
       user=session["user"],
@@ -177,7 +175,7 @@ def get_url(name):
         
   else:
     return render_template(
-    '404.html'
+    '/error-codes/404.html'
   )
 
   return render_template(

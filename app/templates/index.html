@@ -4,10 +4,12 @@
   <title>Dashboard</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dropdown.css') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <!-- Javascript for admin's -->
   {% block scripts %}
+    <script defer src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='js/admin-index.js') }}"></script>
   {% endblock %}
   
@@ -39,10 +41,20 @@
       <h3>You are an admin!</h3>
       <p>Here are all the scores!</p>
       <form method="POST">
-        <input type="text" placeholder="Users Name" name="user_id" required>
-        <input type="text" placeholder="New Score..." name="newScoreForUser" required>
-        <input type="text" placeholder="New Comment..." name="newComment" required>
-        <input type="submit" value="Update Student's Score">
+        <input type="text" placeholder="Users Name" name="user_id" autocomplete="off" required>
+        <input type="text" placeholder="New Score..." name="newScoreForUser" autocomplete="off" required>
+        <div class="dropdown">
+          <button class="dropbtn">Options</button>
+          <div class="dropdown-content">
+            <p id="firstMessage">Did Well Today</p>
+            <p id="secondMessage">Misbehaved Today</p>
+            <p id="thirdMessage">Rewarded Points!</p>
+            <input type="text" placeholder="Other -" id="addComment" autocomplete="off" required>
+            <p class="button" onclick="comment()">Add Comment</p>
+          </div>
+        </div>
+        <input type="text" id="realComment" placeholder="New Comment..." name="newComment" style="display:none;" required>
+        <input type="submit" value="Update Student's Account">
         <p>{{ return_message }}</p>
       </form>
       {% for row in rows %}
