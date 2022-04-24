@@ -53,17 +53,20 @@ def index():
 
     userName = 'user' + preferred_username.replace('@', 'AT').replace('.', 'DOT')
     i = 0
-
-    statement = cursor.execute('SELECT * FROM ' + userName)
-    allClasses = []
-    for classes in statement:
-      print(classes)
+    try:
+      statement = cursor.execute('SELECT * FROM ' + userName)
+      allClasses = []
+      for classes in statement:
+        print(classes)
       
-      i += 1
-      classes = classes[i]
-      allClasses.append(classes)
+        i += 1
+        classes = classes[i]
+        allClasses.append(classes)
       
-    connection.commit()
+      connection.commit()
+    except:
+      allClasses = []
+      None
     return render_template(
       'home.html',
       allClasses=allClasses,    
