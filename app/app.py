@@ -44,12 +44,31 @@ def check_url():
 def index():
     if not session.get("user"):
         return redirect(url_for("login"))
-    # print(str(session["user"])) Can use to get fancy user data
-    # user_data = session["user"]
+
+    connection = sqlite3.connect('users.db')
+    cursor = connection.cursor()
+  
+    user_data = session["user"]
+    preferred_username = user_data["preferred_username"]
+
+    userName = 'user' + preferred_username.replace('@', 'AT').replace('.', 'DOT')
+    i = 0
+
+    statement = cursor.execute('SELECT * FROM ' + userName)
+    allClasses = []
+    for classes in statement:
+      print(classes)
+      
+      i += 1
+      classes = classes[i]
+      allClasses.append(classes)
+      
+    connection.commit()
     return render_template(
       'home.html',
+      allClasses=allClasses,    
       user=session["user"],
-    )
+    ), connection.close()
 
 @app.route('/Create')
 def create_page():
@@ -169,6 +188,31 @@ def get_url(name):
           print("User Has Not Logged In Before...")
           print("Adding them to database now...")
           cursor.execute("INSERT INTO " + name + " (User_id, Name, Score, Comment) VALUES (?, ?, ?, ?)", (preferred_username, str( user_data["name"]), 0, "No Comment"))
+
+          connection.commit()
+          connection.close()
+
+          # Add class to user profile
+        
+          connection = sqlite3.connect('users.db')
+          cursor = connection.cursor()
+        
+          userName = preferred_username.replace('@', 'AT').replace('.', 'DOT')
+
+          cursor.execute(f'CREATE TABLE IF NOT EXISTS user{userName} (Data TEXT)')
+          amount = 1
+          data = cursor.execute(f'SELECT * FROM user{userName}')
+          for column in data.description:
+              amount += 1
+              print(column[0])
+          
+          amount = str(amount)
+          addColumn = str("class" + amount)
+
+          # SELECT Score FROM ' + name + ' WHERE User_id=?', (preferred_username, )):
+        
+          cursor.execute(f'ALTER TABLE user{userName} ADD COLUMN {addColumn} TEXT')
+          cursor.execute(f'INSERT INTO user{userName} ({addColumn}) VALUES (?)', (name, ))
         
           connection.commit()
           connection.close()

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='/styles/index.css')}}">
   {% block scripts %}
     <script src="{{ url_for('static', filename='/js/redirect-off-input.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/cursor-in-focus.js') }}"></script>
   {% endblock %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -25,11 +26,17 @@
         <a style="display:inline-block;" href="/Create" class="button button-text">Create A Class</a>
       </div>
         <br><br>
-        <label for="url">Join Your Class</label><br><br>
-        <input id="url" type="text" placeholder="Class Code" autocomplete="off" required>
+        <label onmouseover="cursorInFocusFromLabel(this)" for="url">Join Your Class</label><br><br>
+        <input id="url" onmouseover="cursorInFocus(this)" type="text" placeholder="Class Code" autocomplete="off" required>
         <p class="button button-for-submit" onclick="enterUrl()">Go to a class</p>  
     </div>
-      
+
+    <div align="center">
+      <h1 style="font-size:130%;">Classes You Are In</h1>
+    {% for i in allClasses %}
+      <a href="/classes/{{ i }}">{{ i }}</a><br><br>
+    {% endfor %}
+    </div>
     {% if config.get("B2C_PROFILE_AUTHORITY") %}
       <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
     {% endif %}
