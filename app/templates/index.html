@@ -11,6 +11,7 @@
   {% block scripts %}
     <script defer src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='js/admin-index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/determine-scrollbar.js') }}"></script>
   {% endblock %}
   
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -19,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
 </head>
-<body>
+<body onload="scrollbarVisible(this)" id="body">
   <div>
     <h1 class="css-err" style="color:red;">If you're seeing this there has been an issue loading this page.<br>Please refresh the window.</h1>
     <h1>Welcome {{ user.get("name") }}</h1>

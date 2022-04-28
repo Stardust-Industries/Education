@@ -1,15 +1,15 @@
 // Message One
-document.getElementById('firstMessage').addEventListener("click", function(){
+document.getElementById('firstMessage').addEventListener("click", () => {
   document.getElementById('addComment').value = "Did Well Today";
 })
 
 // Message Two
-document.getElementById('secondMessage').addEventListener("click", function(){
+document.getElementById('secondMessage').addEventListener("click", () => {
   document.getElementById('addComment').value = "Misbehaved Today";
 })
 
 // Message Three
-document.getElementById('thirdMessage').addEventListener("click", function(){
+document.getElementById('thirdMessage').addEventListener("click", () => {
   document.getElementById('addComment').value = "Rewarded Points!";
 })
 

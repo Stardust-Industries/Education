@@ -66,6 +66,67 @@ button{
   cursor: pointer;
 }
 
+#container{
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 200px;
+  margin: 0 auto;
+  margin-top: 20vh;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: 0.25s;
+  margin-bottom: 250px;
+}
+
+.card{
+  background-color: #fff;
+  border: 1px solid #bacdd8;
+  padding: 8px;
+  border-radius: 12px;
+  background-color: #34495E;
+}
+
+.name{
+  text-align: center;
+  color: #1E90FF;
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+button {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: 600;
+  color: #0077ff;
+  background-color: #e0efff;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+  transition: 0.75s;
+}
+
+button:hover{
+  color: #023c7e;
+  background-color: #9daab9;
+}
+
+#secondContainer{
+  text-align: center;
+}
+
+.embedded-score{
+  display: inline-block; 
+  vertical-align: top;
+  margin: 20px;
+  padding: 20px 30px;
+  max-width: 100px;
+  border: 1px solid #1E3042;
+  font-size: 60px;
+  color: #138D75;
+  background-color: #415A73;
+}
+
 @media screen and (max-width: 480px) {
   .button{font-size: 15px;}
 }

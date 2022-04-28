@@ -28,13 +28,22 @@
         <br><br>
         <label onmouseover="cursorInFocusFromLabel(this)" for="url">Join Your Class</label><br><br>
         <input id="url" onmouseover="cursorInFocus(this)" type="text" placeholder="Class Code" autocomplete="off" required>
-        <p class="button button-for-submit" onclick="enterUrl()">Go to a class</p>  
+        <p class="button button-for-submit" onclick="enterUrl()">Go to class</p>  
     </div>
 
     <div align="center">
-      <h1 style="font-size:130%;">Classes You Are In</h1>
-    {% for i in allClasses %}
-      <a href="/classes/{{ i }}">{{ i }}</a><br><br>
+      <h1 style="font-size:130%;">Classes you are in:</h1>
+    <!-- Needs to add score and also fix the footer blocking things off -->
+    {% for class in allClasses %}
+      <div id="container">
+        <div class="card">
+          <div class="name">{{ class }}</div>
+          <div id="secondContainer">
+            <span class="embedded-score" title="There is nothing to display right now. We are working on that">!</span>
+          </div>
+          <a href="/classes/{{class}}"><button>Go To Class</button></a>
+        </div>
+      </div>
     {% endfor %}
     </div>
     {% if config.get("B2C_PROFILE_AUTHORITY") %}

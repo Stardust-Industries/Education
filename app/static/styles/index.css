@@ -12,9 +12,10 @@ h1{
 }
 
 a{
-  text-align: center;
-  text-decoration-line: none;
-  color: dodgerblue;
+  display: inline-block;
+  position: relative;
+  color: #1E90FE;
+  text-decoration: none;
 }
 
 h2{

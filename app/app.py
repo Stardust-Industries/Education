@@ -3,13 +3,14 @@ import requests
 from flask import Flask, render_template, session, request, redirect, url_for, send_file
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
-import app_config
+import app_config 
 import sqlite3
 import random
 import string
 import qrcode
 from markupsafe import escape
-
+import sys
+sys.setrecursionlimit(10000)
 app = Flask(__name__)
 app.config.from_object(app_config)
 Session(app)
@@ -58,18 +59,16 @@ def index():
       allClasses = []
       for classes in statement:
         print(classes)
-      
         i += 1
         classes = classes[i]
         allClasses.append(classes)
-      
       connection.commit()
     except:
       allClasses = []
       None
     return render_template(
       'home.html',
-      allClasses=allClasses,    
+      allClasses=allClasses, 
       user=session["user"],
     ), connection.close()
 
