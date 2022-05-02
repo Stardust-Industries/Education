@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <h1>Check to see if URL is valid</h1>
-  <h3 align="center">Page's Status Code: <span title="status code">{{ status_code }}</span></h3>
-  <form align="center" method="POST">
-    <input type="text" name="url" placeholder="Enter Testing Url Here" value="/">
-    <input type="submit" value="Check Url">
-  </form>
+<form class="w-full max-w-sm m-5" method="post">
+  <div class="flex items-center border-b border-teal-500 py-2">
+    <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="/<webpage>" name="url">
+    <input class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit" value="Check Code">
+  </div>
+</form>
+<p class="m-5">Status Code: {{ status_code }}</p>
 </body>
 </html>

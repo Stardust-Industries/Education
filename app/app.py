@@ -8,6 +8,7 @@ import sqlite3
 import random
 import string
 import qrcode
+from datetime import datetime
 from markupsafe import escape
 import sys
 sys.setrecursionlimit(10000)
@@ -22,11 +23,15 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 # Health Check Page
 @app.route('/check')
 def health_check():
-  r = requests.get('https://education.stardust-industries.repl.co')
+  r = requests.get('https://education.stardust-industries.repl.co/')
   status_code = r.status_code
+  now = datetime.now()
+  current_time = now.strftime("%H:%M:%S")
+  
   return render_template(
     'health_check.html',
-    status_code=status_code
+    status_code=status_code,
+    server_time=current_time
   )
 
 @app.route('/check', methods=["POST"])
