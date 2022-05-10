@@ -132,7 +132,6 @@ def get_url(name):
       print(str(session["user"])) # Can use to get fancy user data
     
       user_data = session["user"]
-      user_name = user_data["name"]
       preferred_username = user_data["preferred_username"]  # We can't get personal data, just username and random stuff, nothing harmful
     
       admin = False
@@ -375,6 +374,12 @@ def license():
 	except Exception as e:
 		return str(e)
 
+@app.route('/Courses/<coursename>')
+def courses(coursename):
+  return render_template(
+    f'/courses/{coursename}.html'
+  )
+
 @app.route("/login")
 def login():
     if session.get("user"):
@@ -470,5 +475,4 @@ def internal_server_error(e):
 app.jinja_env.globals.update(
     _build_auth_code_flow=_build_auth_code_flow)  # Used in template
 
-#if __name__ == "__main__":
 app.run(host='0.0.0.0', port=8080, debug=True)
