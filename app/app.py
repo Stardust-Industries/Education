@@ -45,6 +45,11 @@ def check_url():
     'health_check.html',
     status_code=status_code
   )
+
+@app.route('/maintenance')
+def maintenance():
+  return render_template('maintenance.html')
+  
 # Home page
 @app.route("/")
 def index():
@@ -53,9 +58,15 @@ def index():
 
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
+
+    maintenance = False # Switch to True when a feature is in progress
   
     user_data = session["user"]
     preferred_username = user_data["preferred_username"]
+
+    if maintenance == True:
+      if not preferred_username == '5296471849@cms.k12.nc.us' or preferred_username == '8892766848@cms.k12.nc.us':
+        return redirect(url_for('maintenance'))
 
     userName = 'user' + preferred_username.replace('@', 'AT').replace('.', 'DOT')
     i = 0
@@ -376,6 +387,12 @@ def courses(coursename):
     f'/courses/{coursename}.html'
   )
 
+
+@app.route('/Courses/')
+def courses_home():
+  return render_template(
+    '/courses/home.html'
+  )
 @app.route("/login")
 def login():
     if session.get("user"):
