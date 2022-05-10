@@ -1,7 +1,7 @@
-#import uuid
+# Config
 import requests
 from flask import Flask, render_template, session, request, redirect, url_for, send_file
-from flask_session import Session  # https://pythonhosted.org/Flask-Session
+from flask_session import Session
 import msal
 import app_config 
 import sqlite3
@@ -20,7 +20,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Health Check Page
+# Health check page
 @app.route('/check')
 def health_check():
   r = requests.get('https://education.stardust-industries.repl.co/')
@@ -45,7 +45,7 @@ def check_url():
     'health_check.html',
     status_code=status_code
   )
-  
+# Home page
 @app.route("/")
 def index():
     if not session.get("user"):
@@ -76,14 +76,13 @@ def index():
       allClasses=allClasses, 
       user=session["user"],
     ), connection.close()
-
+# Class creation page
 @app.route('/Create')
 def create_page():
   return render_template(
     'create.html'
   )
 
-# Class creation script
 @app.route('/Create', methods=["POST"])
 def create():
   class_name = escape(request.form["classname"])
@@ -109,7 +108,7 @@ def create():
   return redirect('https://education.stardust-industries.repl.co/classes/' + str(table_name))
 
   
-# For multiple classes
+# Class page
 @app.route('/classes/<name>')
 def get_url(name):
   connection = sqlite3.connect('classes.db')
@@ -161,7 +160,6 @@ def get_url(name):
         grade = ''.join(grade)
         print(grade)
 
-      # Comment
       for comment in cursor.execute('SELECT Comment FROM ' + name + ' WHERE User_id = ?', (preferred_username, )):
           y = str(comment)
           i = ''.join(y)
@@ -182,8 +180,6 @@ def get_url(name):
               admin = True
               cursor.execute('SELECT * FROM ' + name)
               rows = cursor.fetchall()
-              #for row in rows:
-                  #print(row)
               print('Admin has entered the building')
           else:
               admin = False
